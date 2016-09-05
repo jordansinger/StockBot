@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
-require 'sinatra'
-require 'json'
-require 'rest-client'
+gem 'sinatra'
+gem 'json'
+gem 'rest-client'
