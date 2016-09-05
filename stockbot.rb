@@ -26,10 +26,22 @@ post '/messenger' do
       },
       # set the message contents as the incoming message text
       "message"=>{
-        "text"=> message["text"]
+        "text"=> get_stock_price(message["text"])
       }
     })
   end
+end
+
+def get_stock_price(symbol)
+  begin
+    response = RestClient.get "http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp?callback=quote&symbol=#{symbol}", :content_type => :json, :accept => :json
+  rescue => e
+    return e
+  end
+
+  response = response.gsub("quote(", "").gsub("})", "}") # remove invalid JSON characters
+  json = JSON.parse(response)
+  return json["LastPrice"]
 end
 
 # send message via Messenger Send API
